@@ -1,0 +1,15 @@
+services:
+  inventory_db:
+   container_name: inventory_db
+   image: postgres
+   restart: unless-stopped
+   volumes:
+     - inventory-db-data:/var/lib/postgresql/data
+   environment:
+     - POSTGRES_PASSWORD=$POSTGRESQL_PASSWORD
+   ports:
+     - "5432:5432"
+
+volumes:
+  inventory-db-data:
+    external: true

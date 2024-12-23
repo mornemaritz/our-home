@@ -50,6 +50,22 @@ components:
         - todo
         - inprogress
         - done
+    Product:
+      type: object
+      required:
+        - name
+      description: A Product
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    ProductAction:
+      type: string
+      enum:
+        - AddToShoppingList
+        - Pick
+        - PackAway
   parameters:
     listId:
       in: path
@@ -88,6 +104,20 @@ components:
       schema:
         type: number
         default: 0
+    productId:
+      in: path
+      required: true
+      name: productId
+      description: The Product unique identifier
+      schema:
+        type: string
+    action:
+      in: query
+      required: false
+      name: action
+      description: The action to be performed on the Product
+      schema:
+        $ref: "#/components/schemas/ProductAction"
 
   requestBodies:
     TodoList:
@@ -132,6 +162,14 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/TodoItem"
+    ProductArray:
+      description: An array of Products
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Product"
 
 paths:
   /lists:
@@ -310,3 +348,25 @@ paths:
           description: Todo items updated
         400:
           description: Update request is invalid
+  /lists/products:
+    get:
+      operationId: GetProducts
+      summary: Gets an array of Products
+      tags:
+        - Products
+      parameters:
+        - $ref: "#/components/parameters/top"
+        - $ref: "#/components/parameters/skip"
+      responses:
+        200:
+          $ref: "#/components/responses/ProductArray"
+  /lists/products/{productId}/actions:
+    post:
+      operationId: ActOnProduct
+      summary: Performs the specified action on the selected product
+      tags:
+        - Products
+      parameters:
+        - $ref: "#/components/parameters/productId"
+        - $ref: "#/components/parameters/action"
+

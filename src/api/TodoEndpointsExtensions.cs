@@ -6,7 +6,7 @@ namespace SimpleTodo.Api
     {
         public static RouteGroupBuilder MapTodoApi(this RouteGroupBuilder group)
         {
-            group.MapGet("/", GetLists);
+            group.MapGet("/", GetProducts);
             group.MapPost("/", CreateList);
             group.MapGet("/{listId}", GetList);
             group.MapPut("/{listId}", UpdateList);
@@ -17,6 +17,12 @@ namespace SimpleTodo.Api
             group.MapPut("/{listId}/items/{itemId}", UpdateListItem);
             group.MapDelete("/{listId}/items/{itemId}", DeleteListItem);
             group.MapGet("/{listId}/state/{state}", GetListItemsByState);
+
+            group.MapGet("/products", GetProducts);
+            group.MapPost("/products/{productId}/actions", PerformActionOnProduct);
+            group.MapGet("/inventory", GetInventory);
+            group.MapGet("/shopping-list", GetShoppingList);
+
             return group;
         }
 
@@ -155,7 +161,57 @@ namespace SimpleTodo.Api
 
             return TypedResults.Ok(await repository.GetListItemsByStateAsync(listId, state, skip, batchSize));
         }
+
+        public static async Task<IResult> GetProducts(ProductRepository repository, int? skip = null, int? batchSize = null)
+        {
+            var list = await repository.ListProductsAsync(skip, batchSize);
+
+            return list == null ? TypedResults.NotFound() : TypedResults.Ok(list);
+        }
+
+        public static async Task<IResult> PerformActionOnProduct(ProductRepository repository, Guid productId, string action)
+        {
+            var product = await repository.GetProductAsync(productId);
+            if (product == null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            switch(action)
+            {
+                case "AddToShoppingList":
+                    product.AddToShoppingList();
+                    break;
+                case "Pick":
+                    product.Pick();
+                    break;
+                case "PackAway":
+                    product.PackAway();
+                    break;
+                default:
+                    break;
+            }
+
+            await repository.SaveChangesAsync();
+
+            return TypedResults.Ok(product);
+        }
+
+        public static async Task<IResult> GetInventory(ProductRepository repository, int? skip = null, int? batchSize = null)
+        {
+            var list = await repository.GetInventoryAsync(skip, batchSize);
+
+            return list == null ? TypedResults.NotFound() : TypedResults.Ok(list);
+        }
+
+        public static async Task<IResult> GetShoppingList(ProductRepository repository, int? skip = null, int? batchSize = null)
+        {
+            var list = await repository.GetShoppingListAsync(skip, batchSize);
+
+            return list == null ? TypedResults.NotFound() : TypedResults.Ok(list);
+        }
     }
+
 
     public record CreateUpdateTodoList(string name, string? description = null);
     public record CreateUpdateTodoItem(string name, string state, DateTimeOffset? dueDate, DateTimeOffset? completedDate, string? description = null);
