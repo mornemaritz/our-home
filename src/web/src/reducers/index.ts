@@ -3,6 +3,7 @@ import { TodoActions } from "../actions/common";
 import { listsReducer } from "./listsReducer";
 import { selectedItemReducer } from "./selectedItemReducer";
 import { selectedListReducer } from "./selectedListReducer";
+import { productsReducer } from "./productsReducer";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const combineReducers = (slices: {[key: string]: Reducer<any, TodoActions>}) => (prevState: any, action: TodoActions) =>
@@ -18,4 +19,5 @@ export default combineReducers({
     lists: listsReducer,
     selectedList: selectedListReducer,
     selectedItem: selectedItemReducer,
+    products: productsReducer
 });

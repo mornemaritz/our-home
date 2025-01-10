@@ -21,11 +21,11 @@ builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
 
 var app = builder.Build();
 
-await using (var scope = app.Services.CreateAsyncScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<TodoDb>();
-    await db.Database.EnsureCreatedAsync();
-}
+// await using (var scope = app.Services.CreateAsyncScope())
+// {
+//     var db = scope.ServiceProvider.GetRequiredService<TodoDb>();
+//     await db.Database.EnsureCreatedAsync();
+// }
 
 app.UseCors(policy =>
 {

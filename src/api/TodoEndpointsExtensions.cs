@@ -6,7 +6,7 @@ namespace SimpleTodo.Api
     {
         public static RouteGroupBuilder MapTodoApi(this RouteGroupBuilder group)
         {
-            group.MapGet("/", GetProducts);
+            group.MapGet("/", GetLists);
             group.MapPost("/", CreateList);
             group.MapGet("/{listId}", GetList);
             group.MapPut("/{listId}", UpdateList);
@@ -19,9 +19,6 @@ namespace SimpleTodo.Api
             group.MapGet("/{listId}/state/{state}", GetListItemsByState);
 
             group.MapGet("/products", GetProducts);
-            group.MapPost("/products/{productId}/actions", PerformActionOnProduct);
-            group.MapGet("/inventory", GetInventory);
-            group.MapGet("/shopping-list", GetShoppingList);
 
             return group;
         }
