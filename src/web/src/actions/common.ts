@@ -1,30 +1,16 @@
-import * as itemActions from './itemActions';
-import * as listActions from './listActions';
 import * as productActions from './productActions';
 
 export enum ActionTypes {
-    LOAD_TODO_LISTS = "LOAD_TODO_LISTS",
-    LOAD_TODO_LIST = "LOAD_TODO_LIST",
-    SELECT_TODO_LIST = "SELECT_TODO_LIST",
-    SAVE_TODO_LIST = "SAVE_TODO_LIST",
-    DELETE_TODO_LIST = "DELETE_TODO_LIST",
-    LOAD_TODO_ITEMS = "LOAD_TODO_ITEMS",
-    LOAD_TODO_ITEM = "LOAD_TODO_ITEM",
-    SELECT_TODO_ITEM = "SELECT_TODO_ITEM",
-    SAVE_TODO_ITEM = "SAVE_TODO_ITEM",
-    DELETE_TODO_ITEM = "DELETE_TODO_ITEM",
-    LOAD_PRODUCTS = "LOAD_PRODUCTS"
+    LOAD_PRODUCTS = "LOAD_PRODUCTS",
+    SAVE_PRODUCT = "SAVE_PRODUCT",
+    ADD_PRODUCT_TO_SHOPPING_LIST = "ADD_PRODUCT_TO_SHOPPING_LIST",
+    PICK_PRODUCT = "PICK_PRODUCT",
+    ADD_PRODUCT_TO_INVENTORY = "ADD_PRODUCT_TO_INVENTORY",
 }
 
-export type TodoActions =
-    itemActions.ListItemsAction |
-    itemActions.SelectItemAction |
-    itemActions.LoadItemAction |
-    itemActions.SaveItemAction |
-    itemActions.DeleteItemAction |
-    listActions.ListListsAction |
-    listActions.SelectListAction |
-    listActions.LoadListAction |
-    listActions.SaveListAction |
-    listActions.DeleteListAction |
-    productActions.ListProductsAction;
+export type TodoActions = 
+    productActions.ListProductsAction |
+    productActions.SaveProductAction |
+    productActions.AddProductToShoppingListAction |
+    productActions.PickProductAction |
+    productActions.AddProductToInventoryAction;
