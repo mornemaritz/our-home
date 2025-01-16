@@ -25,6 +25,21 @@ public class Product
     IsOnShoppingList = true;
   }
 
+  public void RemoveFromShoppingList()
+  {
+    IsOnShoppingList = false;
+  }
+
+  public void AddToInventory()
+  {
+    IsInInventory = true;
+  }
+
+  public void RemoveFromInventory()
+  {
+    IsInInventory = false;
+  }
+
   public void Pick()
   {
     IsPicked = true;
