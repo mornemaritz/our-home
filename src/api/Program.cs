@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // var credential = new DefaultAzureCredential();
 // builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"]), credential);
 
-builder.Services.AddScoped<ListsRepository>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddDbContext<TodoDb>(options =>
 {
@@ -48,7 +47,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 
-app.MapGroup("/lists")
+app.MapGroup("/products")
     .MapTodoApi()
     .WithOpenApi();
 app.Run();

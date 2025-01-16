@@ -39,10 +39,10 @@
                 case "remove-from-inventory":
                     product.RemoveFromInventory();
                     break;
-                case "Pick":
+                case "pick":
                     product.Pick();
                     break;
-                case "PackAway":
+                case "pack-away":
                     product.PackAway();
                     break;
                 default:

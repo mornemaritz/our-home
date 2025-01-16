@@ -21,12 +21,12 @@ components:
     ProductAction:
       type: string
       enum:
-        - AddToShoppingList
-        - RemoveFromShoppingList
-        - AddToInventory
-        - RemoveFromInventory
-        - Pick
-        - PackAway
+        - add-to-shopping-list
+        - remove-from-shopping-list
+        - add-to-inventory
+        - remove-from-inventory
+        - pick
+        - pack-away
   parameters:
     top:
       in: query
