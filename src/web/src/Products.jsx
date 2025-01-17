@@ -110,8 +110,8 @@ const Products = () => {
                       <input id={id} type="checkbox" className="w3-check" checked={isPicked} 
                         onChange={() => PerformProductAction(id, isPicked ? 'unpick' : 'pick')}>
                       </input>
+                      <label htmlFor={id} style={{ verticalAlign: "middle", paddingLeft: '0.5em' }}>{name}</label>
                     </td>
-                    <td style={{ verticalAlign: "middle" }}>{name}</td>
                     <td>
                       <button disabled={!isPicked} className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'pack-away')}>
                       <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
