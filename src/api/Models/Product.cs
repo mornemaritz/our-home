@@ -44,6 +44,10 @@ public class Product
   {
     IsPicked = true;
   }
+  public void UnPick()
+  {
+    IsPicked = false;
+  }
 
   public void PackAway()
   {

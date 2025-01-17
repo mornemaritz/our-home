@@ -100,28 +100,51 @@ const Products = () => {
         
 
          {tab === 'Shopping' &&
-         <div id="Shopping" className="w3-animate-opacity">
-           <ul className="w3-ul w3-border w3-hoverable">
-             {products.filter(p => p.isOnShoppingList).map((shoppingListProduct) => {
-               const { id, name } = shoppingListProduct;
-                 return (
-                 <li key={id}>{name}</li>
-                 );
+        <table className="w3-table w3-striped w3-bordered">
+          <tbody>
+            {products.filter(p => p.isOnShoppingList).map((product) => {
+              const { id, name, isPicked } = product;
+                return (
+                  <tr key={id}>
+                    <td>
+                      <input id={id} type="checkbox" className="w3-check" checked={isPicked} 
+                        onChange={() => PerformProductAction(id, isPicked ? 'unpick' : 'pick')}>
+                      </input>
+                    </td>
+                    <td style={{ verticalAlign: "middle" }}>{name}</td>
+                    <td>
+                      <button disabled={!isPicked} className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'pack-away')}>
+                      <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
+                        {/* Inventory */}
+                      <FontAwesomeIcon icon={faList}/>
+                      </button>
+                    </td>
+                  </tr>
+                );
             })}
-          </ul>
-        </div>}
+          </tbody>
+        </table>}
 
         {tab === 'Inventory' &&
-        <div id="Inventory" className="w3-animate-opacity">
-          <ul className="w3-ul w3-border w3-hoverable">
+        <table className="w3-table w3-striped w3-bordered">
+          <tbody>
             {products.filter(p => p.isInInventory).map((inventoryProduct) => {
               const { id, name } = inventoryProduct;
                 return (
-                <li key={id}>{name}</li>
+                  <tr key={id}>
+                    <td style={{ verticalAlign: "middle" }}>{name}</td>
+                    <td>
+                      <button className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'remove-from-inventory')}>
+                      <FontAwesomeIcon icon={faXmark} style={{ paddingRight: '0.5em' }} color='red'/>
+                        {/* Inventory */}
+                      <FontAwesomeIcon icon={faList}/>
+                      </button>
+                    </td>
+                  </tr>
                 );
             })}
-          </ul>
-        </div>}
+          </tbody>
+        </table>}
 
       </div>
     </div>

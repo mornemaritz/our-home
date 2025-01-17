@@ -27,8 +27,9 @@
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "envFile": "${input:dotEnvFilePath}"
+            }
+            // I don't want to pick up the .env file from the root of the project
+            // ,"envFile": "${input:dotEnvFilePath}"
         },
 
         {

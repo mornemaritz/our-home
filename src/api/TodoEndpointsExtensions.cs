@@ -42,6 +42,9 @@
                 case "pick":
                     product.Pick();
                     break;
+                case "unpick":
+                    product.UnPick();
+                    break;
                 case "pack-away":
                     product.PackAway();
                     break;
