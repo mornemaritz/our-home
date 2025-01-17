@@ -28,6 +28,18 @@ param apimServiceName string = ''
 @description('Flag to use Azure API Management to mediate the calls between the Web frontend and the backend API')
 param useAPIM bool = false
 
+@description('Flag to use Azure KeyVault to store secrets')
+param useKeyVault bool = false
+
+@description('Flag to deploy a database')
+param deployDatabase bool = false
+
+@description('ConnectionString for pre-existing database')
+param preExistingDbConnectionString string = ''
+
+@description('Flag to use Azure Monitoring')
+param useMonitoring bool = false
+
 @description('API Management SKU to use if APIM is enabled')
 param apimSku string = 'Consumption'
 
@@ -61,7 +73,7 @@ module web './app/web.bicep' = {
     name: !empty(webServiceName) ? webServiceName : '${abbrs.webSitesAppService}web-${resourceToken}'
     location: location
     tags: tags
-    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    applicationInsightsName: useMonitoring ? monitoring.outputs.applicationInsightsName : ''
     appServicePlanId: appServicePlan.outputs.id
   }
 }
@@ -74,18 +86,19 @@ module api './app/api.bicep' = {
     name: !empty(apiServiceName) ? apiServiceName : '${abbrs.webSitesAppService}api-${resourceToken}'
     location: location
     tags: tags
-    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    applicationInsightsName: useMonitoring ? monitoring.outputs.applicationInsightsName : ''
     appServicePlanId: appServicePlan.outputs.id
-    keyVaultName: keyVault.outputs.name
+    keyVaultName: useKeyVault ? keyVault.outputs.name : ''
     allowedOrigins: [ web.outputs.SERVICE_WEB_URI ]
     appSettings: {
-      AZURE_SQL_CONNECTION_STRING_KEY: sqlServer.outputs.connectionStringKey
+      AZURE_SQL_CONNECTION_STRING_KEY: deployDatabase ? sqlServer.outputs.connectionStringKey : ''
+      PRE_EXISTING_DB_CONNECTION_STRING : preExistingDbConnectionString
     }
   }
 }
 
 // Give the API access to KeyVault
-module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {
+module apiKeyVaultAccess './core/security/keyvault-access.bicep' = if (useKeyVault) {
   name: 'api-keyvault-access'
   scope: rg
   params: {
@@ -95,7 +108,7 @@ module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {
 }
 
 // The application database
-module sqlServer './app/db.bicep' = {
+module sqlServer './app/db.bicep' = if (deployDatabase) {
   name: 'sql'
   scope: rg
   params: {
@@ -124,7 +137,7 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
 }
 
 // Store secrets in a keyvault
-module keyVault './core/security/keyvault.bicep' = {
+module keyVault './core/security/keyvault.bicep' = if (useKeyVault) {
   name: 'keyvault'
   scope: rg
   params: {
@@ -136,7 +149,7 @@ module keyVault './core/security/keyvault.bicep' = {
 }
 
 // Monitor application with Azure Monitor
-module monitoring './core/monitor/monitoring.bicep' = {
+module monitoring './core/monitor/monitoring.bicep' = if (useMonitoring) {
   name: 'monitoring'
   scope: rg
   params: {
@@ -178,12 +191,13 @@ module apimApi './app/apim-api.bicep' = if (useAPIM) {
 }
 
 // Data outputs
-output AZURE_SQL_CONNECTION_STRING_KEY string = sqlServer.outputs.connectionStringKey
+output AZURE_SQL_CONNECTION_STRING_KEY string = deployDatabase ? sqlServer.outputs.connectionStringKey : ''
+output PRE_EXISTING_DB_CONNECTION_STRING string = preExistingDbConnectionString
 
 // App outputs
-output APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
-output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
-output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
+output APPLICATIONINSIGHTS_CONNECTION_STRING string = useMonitoring ? monitoring.outputs.applicationInsightsConnectionString : ''
+output AZURE_KEY_VAULT_ENDPOINT string = useKeyVault ? keyVault.outputs.endpoint : ''
+output AZURE_KEY_VAULT_NAME string = useKeyVault ? keyVault.outputs.name : ''
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output API_BASE_URL string = useAPIM ? apimApi.outputs.SERVICE_API_URI : api.outputs.SERVICE_API_URI

@@ -9,8 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddDbContext<TodoDb>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString");
-    // var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"]];
+    var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"] ?? string.Empty]
+        ?? builder.Configuration["PRE_EXISTING_DB_CONNECTION_STRING"];
+
+        if (string.IsNullOrEmpty(connectionString))
+            connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
+
     options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 builder.Services.AddEndpointsApiExplorer();
@@ -20,11 +24,11 @@ builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
 
 var app = builder.Build();
 
-// await using (var scope = app.Services.CreateAsyncScope())
-// {
-//     var db = scope.ServiceProvider.GetRequiredService<TodoDb>();
-//     await db.Database.EnsureCreatedAsync();
-// }
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<TodoDb>();
+    await db.Database.EnsureCreatedAsync();
+}
 
 app.UseCors(policy =>
 {

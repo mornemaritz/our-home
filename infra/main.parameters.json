@@ -17,6 +17,18 @@
     "appUserPassword": {
       "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} appUserPassword)"
     },
+    "deployDatabase": {
+      "value": "${DEPLOY_DATABASE=false}"
+    },
+    "preExistingDbConnectionString":{
+      "value": "${PRE_EXISTING_DB_CONNECTION_STRING}"
+    },
+    "useKeyVault": {
+      "value": "${USE_KEYVAULT=false}"
+    },
+    "useMonitoring": {
+      "value": "${USE_MONITORING=false}"
+    },
     "useAPIM": {
       "value": "${USE_APIM=false}"
     },
