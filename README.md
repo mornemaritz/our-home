@@ -47,6 +47,7 @@ To learn how to get started with any template, follow the steps in [this quickst
 
 This quickstart will show you how to authenticate on Azure, initialize using a template, provision infrastructure and deploy code on Azure via the following commands:
 
+
 ```bash
 # Log in to azd. Only required once per-install.
 azd auth login
