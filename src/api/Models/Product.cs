@@ -10,6 +10,7 @@ public class Product
   public bool IsOnShoppingList { get; private set; } = false;
   public bool IsPicked { get; set; } = false;
   public bool IsInInventory { get; set; } = false;
+  public int Index { get; set; } = 0;
 
   private Product()
   {

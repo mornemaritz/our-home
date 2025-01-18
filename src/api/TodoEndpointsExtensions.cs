@@ -14,7 +14,7 @@
         {
             var list = await repository.ListProductsAsync(skip, batchSize);
 
-            return list == null ? TypedResults.NotFound() : TypedResults.Ok(list);
+            return list == null ? TypedResults.NotFound() : TypedResults.Ok(list.OrderBy(p => p.Index));
         }
 
         public static async Task<IResult> PerformActionOnProduct(ProductRepository repository, Guid productId, string action)
