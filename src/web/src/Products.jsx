@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList, faPlus, faXmark, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faList, faPlus, faXmark, faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import config from './config';
 
 const productsUrl = config.api.baseUrl + '/products';
 
 const Products = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [tab, setTab] = useState('Products');
 
   useEffect(() => {
+
     const fetchProducts = async () => {
       try {
         const response = await fetch(productsUrl);
         if(response.status >= 200 && response.status <= 299) {
           const productsResponse = await response.json();
           setProducts(productsResponse);
+          setIsLoading(false);
         }
         else {
           console.log('http error', response.status, response.statusText);
@@ -50,7 +53,13 @@ const Products = () => {
           <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Inventory' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Inventory')}><FontAwesomeIcon style={{ paddingRight: '0.5em' }} icon={faList}/>Inventory</button>
         </div>
 
-        {tab === 'Products' &&
+        {isLoading &&
+          <div className="w3-panel w3-theme w3-center">
+              <div className="w3-xlarge w3-padding">Loading...</div>
+              <p><FontAwesomeIcon icon={faSpinner} className='w3-spin' size='4x' /></p>
+          </div>}
+
+        {tab === 'Products' && !isLoading &&
         <table className="w3-table w3-striped w3-bordered">
           <tbody>
             {products.map((product) => {
@@ -99,7 +108,7 @@ const Products = () => {
         </table>}
         
 
-         {tab === 'Shopping' &&
+         {tab === 'Shopping' && !isLoading &&
         <table className="w3-table w3-striped w3-bordered">
           <tbody>
             {products.filter(p => p.isOnShoppingList).map((product) => {
@@ -125,7 +134,7 @@ const Products = () => {
           </tbody>
         </table>}
 
-        {tab === 'Inventory' &&
+        {tab === 'Inventory' && !isLoading &&
         <table className="w3-table w3-striped w3-bordered">
           <tbody>
             {products.filter(p => p.isInInventory).map((inventoryProduct) => {
