@@ -8,7 +8,7 @@ const productsUrl = config.api.baseUrl + '/products';
 const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  const [tab, setTab] = useState('Products');
+  const [tab, setTab] = useState('Shopping');
 
   useEffect(() => {
 
