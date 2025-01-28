@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList, faPlus, faXmark, faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import config from './config';
+import { useAuth } from "./AuthProvider";
 
 const productsUrl = config.api.baseUrl + '/products';
 
 const Products = () => {
+  const { householdName } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [tab, setTab] = useState('Shopping');
@@ -14,7 +16,7 @@ const Products = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await fetch(productsUrl);
+        const response = await fetch(`${productsUrl}?tenant=${householdName}`);
         if(response.status >= 200 && response.status <= 299) {
           const productsResponse = await response.json();
           setProducts(productsResponse);

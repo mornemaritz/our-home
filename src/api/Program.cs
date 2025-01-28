@@ -9,12 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddDbContext<TodoDb>(options =>
 {
-    var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"] ?? string.Empty]
-        ?? builder.Configuration["PRE_EXISTING_DB_CONNECTION_STRING"];
+    // var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"] ?? string.Empty]
+    //     ?? builder.Configuration["PRE_EXISTING_DB_CONNECTION_STRING"];
 
-        if (string.IsNullOrEmpty(connectionString))
-            connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
+    //     if (string.IsNullOrEmpty(connectionString))
+    //         connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
 
+    var connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
     options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 builder.Services.AddEndpointsApiExplorer();
