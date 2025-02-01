@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Todo.Api.Models;
+using OurHome.Api.Models;
 
 namespace UnitTests.Models;
 public class InventoryItemTests
@@ -8,7 +8,7 @@ public class InventoryItemTests
   public void AddToShoppingList_ShouldSetIsOnShoppingListToTrue()
   {
     // Arrange
-    var productUnderTest = new Product("Test");
+    var productUnderTest = new Product("Test", "TestTenant");
 
     // Act
     productUnderTest.AddToShoppingList();
@@ -21,7 +21,7 @@ public class InventoryItemTests
   public void AddToShoppingList_ShouldSetIsPickedToFalse()
   {
     // Arrange
-    var productUnderTest = new Product("Test");
+    var productUnderTest = new Product("Test", "TestTenant");
 
     // Act
     productUnderTest.AddToShoppingList();
@@ -34,7 +34,7 @@ public class InventoryItemTests
   public void Pick_ShouldSetPickedToTrue()
   {
     // Arrange
-    var productUnderTest = new Product("Test");
+    var productUnderTest = new Product("Test", "TestTenant");
 
     // Act
     productUnderTest.Pick();
@@ -47,7 +47,7 @@ public class InventoryItemTests
   public void PackAway_ShouldSetIsInInventoryToTrue()
   {
     // Arrange
-    var productUnderTest = new Product("Test");
+    var productUnderTest = new Product("Test", "TestTenant");
 
     // Act
     productUnderTest.PackAway();
@@ -60,7 +60,7 @@ public class InventoryItemTests
   public void PackAway_ShouldSetIsOnShoppingListAndIsPickedToFalse()
   {
     // Arrange
-    var productUnderTest = new Product("Test");
+    var productUnderTest = new Product("Test", "TestTenant");
 
     // Act
     productUnderTest.PackAway();

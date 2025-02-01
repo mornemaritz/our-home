@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoute/>} >
+              <Route path="/" element={<Products />} />
               <Route path="/shopping-list" element={<Products />} />
             </Route>
           </Routes>

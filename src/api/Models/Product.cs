@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.Api.Models;
+namespace OurHome.Api.Models;
 
 public class Product
 {
   [Key]
   public Guid Id { get; set; } = Guid.NewGuid();
+  public string Tenant { get; set; }
   public string Name { get; set; } = string.Empty;
   public bool IsOnShoppingList { get; private set; } = false;
   public bool IsPicked { get; set; } = false;
@@ -16,9 +17,10 @@ public class Product
   {
   }
 
-  public Product(string name)
+  public Product(string name, string tenant)
   {
     Name = name;
+    Tenant = tenant;
   }
 
   public void AddToShoppingList()

@@ -1,28 +1,28 @@
 using Microsoft.EntityFrameworkCore;
-using Todo.Api.Models;
+using OurHome.Api.Models;
 
-namespace SimpleTodo.Api;
+namespace OurHome.Api;
 
-public class ProductRepository(TodoDb db)
+public class ProductRepository(OurHomeDb db)
 {
     public async Task SaveChangesAsync()
     {
         await db.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Product>> ListProductsAsync(int? skip, int? batchSize)
+    public async Task<IEnumerable<Product>> ListProductsAsync(string tenant, int? skip, int? batchSize)
     {
-        return await ToListAsync(db.Products, skip, batchSize);
+        return await ToListAsync(db.Products.Where(p => p.Tenant == tenant), skip, batchSize);
     }
 
-    public async Task<IEnumerable<Product>> GetInventoryAsync(int? skip, int? batchSize)
+    public async Task<IEnumerable<Product>> GetInventoryAsync(string tenant, int? skip, int? batchSize)
     {
-        return await ToListAsync(db.Products.Where(p => p.IsInInventory), skip, batchSize);
+        return await ToListAsync(db.Products.Where(p => p.IsInInventory && p.Tenant == tenant), skip, batchSize);
     }
 
-    public async Task<IEnumerable<Product>> GetShoppingListAsync(int? skip, int? batchSize)
+    public async Task<IEnumerable<Product>> GetShoppingListAsync(string tenant, int? skip, int? batchSize)
     {
-        return await ToListAsync(db.Products.Where(p => p.IsOnShoppingList), skip, batchSize);
+        return await ToListAsync(db.Products.Where(p => p.IsOnShoppingList && p.Tenant == tenant), skip, batchSize);
     }
 
     public async Task<Product?> GetProductAsync(Guid productId)

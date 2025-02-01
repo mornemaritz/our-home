@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Api", "Todo.Api.csproj", "{A40339D0-DEF8-4CF7-9E57-CA227AA78056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OurHome.Api", "OurHome.Api.csproj", "{A40339D0-DEF8-4CF7-9E57-CA227AA78056}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "..\..\tests\api\UnitTests\UnitTests.csproj", "{BA25AD5B-11AC-4544-8265-31693F81A272}"
 EndProject

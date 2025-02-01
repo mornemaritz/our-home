@@ -18,6 +18,8 @@ components:
           type: string
         name:
           type: string
+        tenant:
+          type: string
     ProductAction:
       type: string
       enum:
@@ -52,6 +54,13 @@ components:
       description: The Product unique identifier
       schema:
         type: string
+    tenant:
+      in: query
+      required: false
+      name: tenant
+      description: The tenant identifier
+      schema:
+        type: string
     action:
       in: query
       required: false
@@ -84,6 +93,7 @@ paths:
       tags:
         - Products
       parameters:
+        - $ref: "#/components/parameters/tenant"
         - $ref: "#/components/parameters/top"
         - $ref: "#/components/parameters/skip"
       responses:
