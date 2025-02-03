@@ -22,7 +22,7 @@ builder.Services.AddDbContext<OurHomeDb>(options =>
         (null, null, string azureSqlConnectionString) => azureSqlConnectionString
     };
 
-    options.UseSqlServer(localConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
