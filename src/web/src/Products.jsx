@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faList, faPlus, faXmark, faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { /*faList, faPlus, faXmark,*/ faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import config from './config';
 import { useAuth } from "./AuthProvider";
 
@@ -50,9 +50,9 @@ const Products = () => {
       <div className="w3-card-4 w3-responsive w3-border w3-margin">
 
         <div className="w3-bar w3-theme">
-          <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Products' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Products')}>Products</button>
+          {/* <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Products' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Products')}>Products</button> */}
           <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Shopping' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Shopping')}><FontAwesomeIcon style={{ paddingRight: '0.5em' }} icon={faCartShopping}/>Shopping List</button>
-          <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Inventory' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Inventory')}><FontAwesomeIcon style={{ paddingRight: '0.5em' }} icon={faList}/>Inventory</button>
+          {/* <button className={`w3-bar-item w3-button w3-padding-16 ${tab === 'Inventory' ? ' w3-theme-dark' : ''}`} onClick={() => setTab('Inventory')}><FontAwesomeIcon style={{ paddingRight: '0.5em' }} icon={faList}/>Inventory</button> */}
         </div>
 
         {isLoading &&
@@ -61,7 +61,7 @@ const Products = () => {
               <p><FontAwesomeIcon icon={faSpinner} className='w3-spin' size='4x' /></p>
           </div>}
 
-        {tab === 'Products' && !isLoading &&
+        {/* {tab === 'Products' && !isLoading &&
         <table className="w3-table w3-striped w3-bordered">
           <tbody>
             {products.map((product) => {
@@ -73,14 +73,12 @@ const Products = () => {
                     ? <td>
                         <button className="w3-button w3-theme w3-card-4 w3-round"  onClick={() => PerformProductAction(id, 'remove-from-shopping-list')}>
                         <FontAwesomeIcon icon={faXmark} style={{ paddingRight: '0.5em' }} color='red'/>
-                          {/* Shopping List */}
                         <FontAwesomeIcon icon={faCartShopping}/>
                         </button>
                       </td>
                     : <td>
                         <button className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'add-to-shopping-list')}>
                         <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
-                          {/* Shopping List */}
                         <FontAwesomeIcon icon={faCartShopping}/>
                         </button>
                       </td>
@@ -90,7 +88,6 @@ const Products = () => {
                       <td>
                         <button className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'remove-from-inventory')}>
                         <FontAwesomeIcon icon={faXmark} style={{ paddingRight: '0.5em' }} color='red'/>
-                          {/* Inventory */}
                         <FontAwesomeIcon icon={faList}/>
                         </button>
                       </td>
@@ -98,7 +95,6 @@ const Products = () => {
                       <td>
                         <button className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'add-to-inventory')}>
                         <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
-                          {/* Inventory */}
                         <FontAwesomeIcon icon={faList}/>
                         </button>
                       </td>
@@ -107,7 +103,7 @@ const Products = () => {
                 );
             })}
           </tbody>
-        </table>}
+        </table>} */}
         
 
          {tab === 'Shopping' && !isLoading &&
@@ -123,19 +119,18 @@ const Products = () => {
                       </input>
                       <label htmlFor={id} style={{ verticalAlign: "middle", paddingLeft: '0.5em' }}>{name}</label>
                     </td>
-                    <td>
+                    {/* <td>
                       <button disabled={!isPicked} className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'pack-away')}>
                       <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
-                        {/* Inventory */}
                       <FontAwesomeIcon icon={faList}/>
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 );
             })}
           </tbody>
         </table>}
-
+{/* 
         {tab === 'Inventory' && !isLoading &&
         <table className="w3-table w3-striped w3-bordered">
           <tbody>
@@ -147,7 +142,6 @@ const Products = () => {
                     <td>
                       <button className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'remove-from-inventory')}>
                       <FontAwesomeIcon icon={faXmark} style={{ paddingRight: '0.5em' }} color='red'/>
-                        {/* Inventory */}
                       <FontAwesomeIcon icon={faList}/>
                       </button>
                     </td>
@@ -155,7 +149,7 @@ const Products = () => {
                 );
             })}
           </tbody>
-        </table>}
+        </table>} */}
 
       </div>
     </div>

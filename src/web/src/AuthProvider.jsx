@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [householdName, setHouseholdName] = useState('');
+  const [householdName, setHouseholdName] = useState(localStorage.getItem("householdName") || "");
   // const [user, setUser] = useState(null);
   // const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const loginAction = /*async */(data) => {
     // Testing
     setHouseholdName(data.householdName);
+    localStorage.setItem("householdName", data.householdName);
     // setUser({username: 'me', token: 'token-meh'});
     // setToken('token-meh');
     // localStorage.setItem("token", 'token-meh');

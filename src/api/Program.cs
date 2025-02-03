@@ -9,14 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddDbContext<OurHomeDb>(options =>
 {
-    // var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"] ?? string.Empty]
-    //     ?? builder.Configuration["PRE_EXISTING_DB_CONNECTION_STRING"];
+    var localConnectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string
+    
+    var connectionString = (
+        localConnectionString,
+        builder.Configuration["PRE_EXISTING_DB_CONNECTION_STRING"],
+        builder.Configuration[builder.Configuration["AZURE_SQL_CONNECTION_STRING_KEY"] ?? string.Empty]) switch 
+    {
+        (null, null, null) => throw new InvalidOperationException("Connection string not found"),
+        (string inventoryConnectionString, _, _) => inventoryConnectionString,
+        (null, string preExistingDbConnectionString, _) => preExistingDbConnectionString,
+        (null, null, string azureSqlConnectionString) => azureSqlConnectionString
+    };
 
-    //     if (string.IsNullOrEmpty(connectionString))
-    //         connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
-
-    var connectionString = builder.Configuration.GetConnectionString("InventoryConnectionString"); // Local dev connection string  
-    options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    options.UseSqlServer(localConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,7 +34,6 @@ var app = builder.Build();
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<OurHomeDb>();
-    await db.Database.EnsureCreatedAsync();
     await db.Database.MigrateAsync();
 }
 
