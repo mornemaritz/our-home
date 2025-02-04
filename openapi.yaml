@@ -20,6 +20,12 @@ components:
           type: string
         tenant:
           type: string
+        isOnShoppingList:
+          type: boolean
+        isInInventory:
+          type: boolean
+        isPicked:
+          type: boolean
     ProductAction:
       type: string
       enum:
@@ -99,6 +105,20 @@ paths:
       responses:
         200:
           $ref: "#/components/responses/ProductArray"
+    post:
+      operationId: AddProduct
+      summary: Adds a new Product
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        201:
+          $ref: "#/components/responses/Product"
   /products/{productId}/actions:
     post:
       operationId: ActOnProduct

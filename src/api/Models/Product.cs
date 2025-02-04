@@ -8,7 +8,7 @@ public class Product
   public Guid Id { get; set; } = Guid.NewGuid();
   public string Tenant { get; set; }
   public string Name { get; set; } = string.Empty;
-  public bool IsOnShoppingList { get; private set; } = false;
+  public bool IsOnShoppingList { get; set; } = false;
   public bool IsPicked { get; set; } = false;
   public bool IsInInventory { get; set; } = false;
   public int Index { get; set; } = 0;

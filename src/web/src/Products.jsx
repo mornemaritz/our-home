@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { /*faList, faPlus, faXmark,*/ faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faList, faPlus,/* faXmark,*/ faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import config from './config';
 import { useAuth } from "./AuthProvider";
+import Creatable from 'react-select/creatable';
 
 const productsUrl = config.api.baseUrl + '/products';
 
@@ -44,6 +45,32 @@ const Products = () => {
       console.log('http error', response.status, response.statusText);
     }
   };
+
+  const handleCreate = async (inputValue) => {
+    setIsLoading(true);
+    var newProduct = { id: crypto.randomUUID(), name: inputValue, tenant: householdName, isOnShoppingList: true, isPicked: false };
+    const response = await fetch(productsUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newProduct)
+    });
+    if(response.status >= 200 && response.status <= 299) {
+      const addedProduct = await response.json();
+      console.log('addedProduct', addedProduct);
+      setProducts([...products, addedProduct]);
+      setIsLoading(false);
+    }
+    else {
+      console.log('http error', response.status, response.statusText);
+    }
+  };
+
+  const handleChange = (newValue, actionMeta) => {
+    PerformProductAction(newValue.value, 'add-to-shopping-list');
+  };
+
 
   return (
     <div className="w3-row-padding">
@@ -119,15 +146,20 @@ const Products = () => {
                       </input>
                       <label htmlFor={id} style={{ verticalAlign: "middle", paddingLeft: '0.5em' }}>{name}</label>
                     </td>
-                    {/* <td>
+                    <td>
                       <button disabled={!isPicked} className="w3-button w3-theme w3-card-4 w3-round" onClick={() => PerformProductAction(id, 'pack-away')}>
                       <FontAwesomeIcon icon={faPlus} style={{ paddingRight: '0.5em' }}/>
                       <FontAwesomeIcon icon={faList}/>
                       </button>
-                    </td> */}
+                    </td>
                   </tr>
                 );
             })}
+            <tr>
+              <td>
+                <Creatable options={products.map(p => ({ value: p.id, label: p.name }))} onCreateOption={handleCreate} onChange={handleChange}/>
+              </td>
+            </tr>
           </tbody>
         </table>}
 {/* 

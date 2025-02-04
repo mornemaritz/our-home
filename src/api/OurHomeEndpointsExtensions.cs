@@ -1,10 +1,13 @@
-﻿namespace OurHome.Api;
+﻿using OurHome.Api.Models;
+
+namespace OurHome.Api;
 
 public static class OurHomeEndpointsExtensions
 {
     public static RouteGroupBuilder MapOurHomeApi(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetProducts);
+        group.MapPost("/", CreateProduct);
         group.MapPost("/{productId}/actions", PerformActionOnProduct);
 
         return group;
@@ -15,6 +18,14 @@ public static class OurHomeEndpointsExtensions
         var list = await repository.ListProductsAsync(tenant, skip, batchSize);
 
         return list == null ? TypedResults.NotFound() : TypedResults.Ok(list.OrderBy(p => p.Index));
+    }
+
+    public static async Task<IResult> CreateProduct(ProductRepository repository, Product product)
+    {
+        await repository.AddProductAsync(product);
+        await repository.SaveChangesAsync();
+
+        return TypedResults.Created("", product);
     }
 
     public static async Task<IResult> PerformActionOnProduct(ProductRepository repository, Guid productId, string action)

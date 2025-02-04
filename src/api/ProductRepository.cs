@@ -30,6 +30,16 @@ public class ProductRepository(OurHomeDb db)
        return await db.Products.FindAsync(productId);
     }
 
+    public async Task<Product> AddProductAsync(Product newProduct)
+    {
+        if ((await db.Products.SingleOrDefaultAsync(p => p.Name == newProduct.Name && p.Tenant == newProduct.Tenant)) is Product existingProduct)
+        {
+           return existingProduct;
+        }
+
+        return (await db.Products.AddAsync(newProduct)).Entity;
+    }
+
     private static async Task<List<T>> ToListAsync<T>(IQueryable<T> queryable, int? skip, int? batchSize)
     {
         if (skip != null)
